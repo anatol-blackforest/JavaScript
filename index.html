@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Form Constructor</title>
+  <script type="text/javascript" src="constructor.js"></script>
+  <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+
+  <button id="hider">
+    Показать форму 1
+  </button>
+
+  <button id="hider2">
+    Показать форму 2
+  </button>
+
+  <script>
+  
+    var form = {
+		fields: [
+			{
+				type: 'text', // textarea
+				name: 'firstname',
+				label: 'FirstName',
+				placeholder: 'Firstname',
+				validation: '!empty' // email, tel
+			},
+			{
+				type: 'text',
+				name: 'email',
+				label: 'E-mail',
+				placeholder: 'E-mail',
+				validation: 'email'
+			}
+
+		],
+		submit: 'Send', // текст кнопки отправить
+		action: 'send.php',
+		type:   'post'
+	}
+	
+	var form2 = {
+		fields: [
+			{
+				type: 'text', // textarea
+				name: 'firstname',
+				label: 'FirstName',
+				placeholder: 'Firstname',
+				validation: '!empty' // email, tel
+			},
+			{
+				type: 'text',
+				name: 'email',
+				label: 'E-mail',
+				placeholder: 'E-mail',
+				validation: 'email'
+			}
+			,
+			{
+				type: 'text',
+				name: 'tel',
+				label: 'Tel',
+				placeholder: 'Tel',
+				validation: 'tel'
+			}
+
+		],
+		submit: 'Send2', // текст кнопки отправить
+		action: 'send2.php',
+		type:   'post'
+	}
+	
+	var newForm = new Form(form);
+	newForm.makeForm();
+	newForm.attach('#hider');
+	newForm.validate();
+	
+	var newForm2 = new Form(form2);
+	newForm2.makeForm();
+	newForm2.attach('#hider2');
+    newForm2.validate();
+  
+  
+	/*
+	ТЗ
+
+	Требуется создать класс для создания и работы с формами, а так же для отправки их на почту(на сервер).
+
+	Конструктор класса будет принимать объект такого вида:
+
+	{
+		fields: [
+			{
+				type: 'text', // textarea
+				name: 'firstname',
+				label: 'FirstName',
+				placeholder: 'Firstname',
+				validation: '!empty' // email, tel
+			},
+			{
+				type: 'text',
+				name: 'email',
+				label: 'E-mail',
+				placeholder: 'E-mail',
+				validation: 'email'
+			}
+
+		],
+		submit: 'Send', // текст кнопки отправить
+		action: 'send.php',
+		type:   'post'
+
+	}
+
+	Класс будет создавать форму, оверлей, и прятать все это.
+
+	Метод attach('selector') будет навешивать обработчик клика на элемент соответствующий селектору. по клику будет показываться форма, по клику на крестик, она будет сворачиваться.
+
+	Класс должен быть внешним файлом.
+
+	ТЗ дополнение
+
+	Реализовать валидацию форм, согласно правилам заданным в настройках:
+
+	!empty — проверять, что поле не пустое
+	email — проверять на то, что в поле email
+	tel — проверять что в поле есть только такой набор символов 0-9+-() (и пробел), а так же максимальная длинна <20 символов
+
+	Проверку делать по событию onblur и submit, выводить подсказки:
+
+	«Поле не может быть пустым»
+	«Введите правильный email»
+	«Введите правильный телефон»
+
+	метод валидации должен быть доступен снаружи (если пользователь[программист] захочет вызвать его сам)
+
+	*/
+  
+	
+	
+
+  </script>
+</body>
+</html>
