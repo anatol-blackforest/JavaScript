@@ -55,11 +55,13 @@
 			var minutes = parseInt(video.currentTime/60);
 			var seconds = parseInt(video.currentTime%60);
 			
-			(hours>9)?hours=hours:hours='0'+hours;
-			(minutes>9)?minutes=minutes:minutes='0'+minutes;
-			(seconds>9)?seconds=seconds:seconds='0'+seconds;
-			
-			return hours +':'+ minutes +':'+ seconds;
+			return function(){
+				(hours>9)?hours=hours:hours='0'+hours;
+				(minutes>9)?minutes=minutes:minutes='0'+minutes;
+				(seconds>9)?seconds=seconds:seconds='0'+seconds;
+				
+				return hours +':'+ minutes +':'+ seconds;
+			}
 			
 		};
 		
@@ -69,7 +71,7 @@
 		
 			progress.style.width = parseInt((video.currentTime/(video.duration/100))) + '%';
 			
-			currenttimeSpan.textContent = calculateCurrentTime();
+			currenttimeSpan.textContent = calculateCurrentTime()();
 			
 			if(!video.ended && !video.paused){
 				requestAnimationFrame(progressbar);
@@ -82,10 +84,10 @@
 		scale.addEventListener('click', function(e){
 			e = e || window.event;
 			var x = e.offsetX==undefined?e.layerX:e.offsetX;
-			progress.style.width = parseInt((x/(parseInt(getComputedStyle(scale).width)/100))) + '%';
 			var playPoint = video.duration*(x/parseInt(getComputedStyle(scale).width)); 
+			progress.style.width = parseInt((x/(parseInt(getComputedStyle(scale).width)/100))) + '%';
 			video.currentTime = playPoint;
-			currenttimeSpan.textContent = calculateCurrentTime();
+			currenttimeSpan.textContent = calculateCurrentTime()();
 		});
 		
 		//video click
@@ -106,7 +108,8 @@
 		Array.prototype.map.call(buttons, function(obj) {
 			
 			obj.addEventListener('click', function(e){
-				
+				e = e || window.event;
+					
 				if(this.id == 'fullscreen'){
 					
 					if (video.requestFullscreen) {
@@ -119,7 +122,6 @@
 					
 				}else if(this.id == 'play'){
 					
-					e = e || window.event;
 					if(video.paused){
 						video.play();
 						e.target.style.backgroundImage = 'url(img/pause.png)'
@@ -133,7 +135,6 @@
 					
 				}else if(this.id == 'music'){
 					
-					e = e || window.event;
 					if(video.muted){
 						video.muted = false;
 						e.target.style.backgroundImage = 'url(img/music.png)'
