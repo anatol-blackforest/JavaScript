@@ -81,13 +81,13 @@
 					
 				if(e.target.id == 'video'){
 					
-					if(e.target.paused){
-						e.target.play();
+					if(video.paused){
+						video.play();
 						progressbar();
-						play.style.backgroundImage = 'url(img/play.png)';
-					}else{
-						e.target.pause();
 						play.style.backgroundImage = 'url(img/pause.png)';
+					}else{
+						video.pause();
+						play.style.backgroundImage = 'url(img/play.png)';
 					}	
 					
 				}else if(e.target.id == 'scale' || e.target.id == 'progress'){
@@ -112,11 +112,11 @@
 					
 					if(video.paused){
 						video.play();
-						e.target.style.backgroundImage = 'url(img/pause.png)'
+						play.style.backgroundImage = 'url(img/pause.png)'
 						animationFrame = requestAnimationFrame(progressbar);
 					}else{
 						video.pause();
-						e.target.style.backgroundImage = 'url(img/play.png)'
+						play.style.backgroundImage = 'url(img/play.png)'
 						cancelAnimationFrame(animationFrame);
 					}
 					durationSpan.textContent = durHours +':'+ durMinutes +':'+ durSeconds;
