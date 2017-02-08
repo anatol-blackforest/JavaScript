@@ -29,8 +29,6 @@
 		let durMinutes = parseInt(video.duration/60);
 		let durSeconds = parseInt(video.duration%60);
 		
-		//${}
-		
 		durationSpan.textContent = `${durHours}:${durMinutes}:${durSeconds}`;
 		
 		video.width = width;
