@@ -2,35 +2,32 @@
 	
 	window.onload = function(){
 			
-		var width = 900;
-		var height = 675;
-
-		var player = document.getElementsByClassName('player')[0];
-		var video = document.getElementsByClassName('video')[0];
-		var scale = document.getElementById('scale');
-		var progress = document.getElementById('progress');
-		var currenttimeSpan = document.getElementById('currenttime');
-		var durationSpan = document.getElementById('duration');
-		var volume = document.getElementById('volume');
+		//constants	- dimensions
+		const width = 900;
+		const height = 675;
+		
+        //constants - dom
+		const player = document.getElementsByClassName('player')[0];
+		const video = document.getElementsByClassName('video')[0];
+		const scale = document.getElementById('scale');
+		const progress = document.getElementById('progress');
+		const currenttimeSpan = document.getElementById('currenttime');
+		const durationSpan = document.getElementById('duration');
+		const volume = document.getElementById('volume');
+		const play = document.getElementById('play');
+		const music = document.getElementById('music');
+		const controls = document.querySelector('.controls');
+		const filters = document.querySelector('.filters');
 		
 		//filtersprop
+		let filter, animationFrame;
+		let saturate = 100, contrast = 100, brightness = 100, hueRotate = 0, sepia = 0;
+		let inversion = false;
 		
-		var saturate = 100, contrast = 100, brightness = 100, hueRotate = 0, sepia = 0;
-		
-		//buttons
-		var play = document.getElementById('play');
-		var music = document.getElementById('music');
-		var controls = document.querySelector('.controls');
-		var filters = document.querySelector('.filters');
-		var filter;
-		
-		var inversion = false;
-		
-		var animationFrame;
-		
-		var durHours = parseInt(video.duration/3600);
-		var durMinutes = parseInt(video.duration/60);
-		var durSeconds = parseInt(video.duration%60);
+		//videofile duration
+		let durHours = parseInt(video.duration/3600);
+		let durMinutes = parseInt(video.duration/60);
+		let durSeconds = parseInt(video.duration%60);
 		
 		durationSpan.textContent = durHours +':'+ durMinutes +':'+ durSeconds;
 		
@@ -42,11 +39,11 @@
 		player.style.width = width + 'px';
 		player.style.height = height + 'px';
 		
-		var calculateCurrentTime = function(){
+		let calculateCurrentTime = function(){
 		
-			var hours = parseInt(video.currentTime/3600);
-			var minutes = parseInt(video.currentTime/60);
-			var seconds = parseInt(video.currentTime%60);
+			let hours = parseInt(video.currentTime/3600);
+			let minutes = parseInt(video.currentTime/60);
+			let seconds = parseInt(video.currentTime%60);
 			
 			return function(){
 				(hours>9)?hours=hours:hours='0'+hours;
@@ -60,10 +57,9 @@
 		
 		//scale
 		
-		var progressbar = function(){
+		let progressbar = function(){
 		
 			progress.style.width = parseInt((video.currentTime/(video.duration/100))) + '%';
-			
 			currenttimeSpan.textContent = calculateCurrentTime()();
 			
 			if(!video.ended && !video.paused){
@@ -92,8 +88,8 @@
 					
 				}else if(e.target.id == 'scale' || e.target.id == 'progress'){
 					
-					var x = e.offsetX==undefined?e.layerX:e.offsetX;
-					var playPoint = video.duration*(x/parseInt(getComputedStyle(scale).width)); 
+					let x = e.offsetX==undefined?e.layerX:e.offsetX;
+					let playPoint = video.duration*(x/parseInt(getComputedStyle(scale).width)); 
 					progress.style.width = parseInt((x/(parseInt(getComputedStyle(scale).width)/100))) + '%';
 					video.currentTime = playPoint;
 					currenttimeSpan.textContent = calculateCurrentTime()();
