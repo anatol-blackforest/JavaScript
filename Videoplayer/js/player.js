@@ -29,15 +29,17 @@
 		let durMinutes = parseInt(video.duration/60);
 		let durSeconds = parseInt(video.duration%60);
 		
-		durationSpan.textContent = durHours +':'+ durMinutes +':'+ durSeconds;
+		//${}
+		
+		durationSpan.textContent = `${durHours}:${durMinutes}:${durSeconds}`;
 		
 		video.width = width;
 		video.height = height;
 		video.volume = 0.5;
 		currenttimeSpan.textContent = '00:00:00';
 		
-		player.style.width = width + 'px';
-		player.style.height = height + 'px';
+		player.style.width = `${width}px`;
+		player.style.height = `${height}px`;
 		
 		let calculateCurrentTime = function(){
 		
@@ -46,11 +48,11 @@
 			let seconds = parseInt(video.currentTime%60);
 			
 			return function(){
-				(hours>9)?hours=hours:hours='0'+hours;
-				(minutes>9)?minutes=minutes:minutes='0'+minutes;
-				(seconds>9)?seconds=seconds:seconds='0'+seconds;
+				(hours>9)?hours=hours:hours=`0${hours}`;
+				(minutes>9)?minutes=minutes:minutes=`0${minutes}`;
+				(seconds>9)?seconds=seconds:seconds=`0${seconds}`;
 				
-				return hours +':'+ minutes +':'+ seconds;
+				return `${hours}:${minutes}:${seconds}`;
 			}
 			
 		};
@@ -90,7 +92,7 @@
 					
 					let x = e.offsetX==undefined?e.layerX:e.offsetX;
 					let playPoint = video.duration*(x/parseInt(getComputedStyle(scale).width)); 
-					progress.style.width = parseInt((x/(parseInt(getComputedStyle(scale).width)/100))) + '%';
+				    progress.style.width = `${parseInt((x/(parseInt(getComputedStyle(scale).width)/100)))}%`;
 					video.currentTime = playPoint;
 					currenttimeSpan.textContent = calculateCurrentTime()();
 					
@@ -115,7 +117,7 @@
 						play.style.backgroundImage = 'url(img/play.png)'
 						cancelAnimationFrame(animationFrame);
 					}
-					durationSpan.textContent = durHours +':'+ durMinutes +':'+ durSeconds;
+					durationSpan.textContent = `${durHours}:${durMinutes}:${durSeconds}`;
 					
 				}else if(e.target.id == 'music'){
 					
@@ -177,8 +179,9 @@
 				sepia = e.target.value;
 			}
 			
-			video.style.filter = "saturate("+ saturate +"%) contrast("+ contrast +"%) brightness("+ brightness +"%) hue-rotate("+ hueRotate +"deg) sepia("+ sepia +"%)";
-			video.style.WebkitFilter = "saturate("+ saturate +"%) contrast("+ contrast +"%) brightness("+ brightness +"%) hue-rotate("+ hueRotate +"deg) sepia("+ sepia +"%)";
+			video.style.filter = `saturate(${saturate}%) contrast(${contrast}%) brightness(${brightness}%) hue-rotate(${hueRotate}deg) sepia(${sepia}%)`;
+			video.style.WebkitFilter = `saturate(${saturate}%) contrast(${contrast}%) brightness(${brightness}%) hue-rotate(${hueRotate}deg) sepia(${sepia}%)`;
+			
 			
 		});
 		
