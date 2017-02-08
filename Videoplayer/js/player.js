@@ -20,9 +20,8 @@
 		//buttons
 		var play = document.getElementById('play');
 		var music = document.getElementById('music');
-		var buttons = document.querySelectorAll('.controls button');
-		
-		var filters = document.querySelectorAll('.filters div input');
+		var controls = document.querySelector('.controls');
+		var filters = document.querySelector('.filters');
 		var filter;
 		
 		var inversion = false;
@@ -42,12 +41,6 @@
 		
 		player.style.width = width + 'px';
 		player.style.height = height + 'px';
-		
-		volume.addEventListener('change', function(){
-			video.volume = this.value;
-			video.muted = false;
-			music.style.backgroundImage = 'url(img/music.png)';
-		});
 		
 		var calculateCurrentTime = function(){
 		
@@ -81,36 +74,31 @@
 			
 		};
 		
-		scale.addEventListener('click', function(e){
-			e = e || window.event;
-			var x = e.offsetX==undefined?e.layerX:e.offsetX;
-			var playPoint = video.duration*(x/parseInt(getComputedStyle(scale).width)); 
-			progress.style.width = parseInt((x/(parseInt(getComputedStyle(scale).width)/100))) + '%';
-			video.currentTime = playPoint;
-			currenttimeSpan.textContent = calculateCurrentTime()();
-		});
-		
-		//video click
-		
-		video.addEventListener('click', function(){
-			if(this.paused){
-				this.play();
-				progressbar();
-				play.style.backgroundImage = 'url(img/play.png)';
-			}else{
-				this.pause();
-				play.style.backgroundImage = 'url(img/pause.png)';
-			}
-		});
-		
 		//buttons
 		
-		Array.prototype.map.call(buttons, function(obj) {
-			
-			obj.addEventListener('click', function(e){
+		player.addEventListener('click', function(e){
 				e = e || window.event;
 					
-				if(this.id == 'fullscreen'){
+				if(e.target.id == 'video'){
+					
+					if(e.target.paused){
+						e.target.play();
+						progressbar();
+						play.style.backgroundImage = 'url(img/play.png)';
+					}else{
+						e.target.pause();
+						play.style.backgroundImage = 'url(img/pause.png)';
+					}	
+					
+				}else if(e.target.id == 'scale' || e.target.id == 'progress'){
+					
+					var x = e.offsetX==undefined?e.layerX:e.offsetX;
+					var playPoint = video.duration*(x/parseInt(getComputedStyle(scale).width)); 
+					progress.style.width = parseInt((x/(parseInt(getComputedStyle(scale).width)/100))) + '%';
+					video.currentTime = playPoint;
+					currenttimeSpan.textContent = calculateCurrentTime()();
+					
+				}else if(e.target.id == 'fullscreen'){
 					
 					if (video.requestFullscreen) {
 					  video.requestFullscreen();
@@ -120,7 +108,7 @@
 					  video.webkitRequestFullscreen();
 					}
 					
-				}else if(this.id == 'play'){
+				}else if(e.target.id == 'play'){
 					
 					if(video.paused){
 						video.play();
@@ -133,7 +121,7 @@
 					}
 					durationSpan.textContent = durHours +':'+ durMinutes +':'+ durSeconds;
 					
-				}else if(this.id == 'music'){
+				}else if(e.target.id == 'music'){
 					
 					if(video.muted){
 						video.muted = false;
@@ -144,7 +132,7 @@
 						e.target.style.backgroundImage = 'url(img/nomusic.png)'
 					}
 					
-				}else if(this.id == 'stop'){
+				}else if(e.target.id == 'stop'){
 					
 					video.pause();
 					video.currentTime = 0;
@@ -155,7 +143,7 @@
 					
 					play.style.backgroundImage = 'url(img/play.png)';
 					
-				}else if(this.id == 'invert'){
+				}else if(e.target.id == 'invert'){
 					
 					inversion = !inversion;
 			
@@ -171,31 +159,31 @@
 					
 				}
 			}); 
-				
-		});
 		
 		//filters
 		
-		Array.prototype.map.call(filters, function(obj) {
-			obj.addEventListener('change', function(){
-				
-				if(this.id == 'saturate'){
-					saturate = this.value * 2;
-				}else if(this.id == 'contrast'){
-					contrast = this.value * 2;
-				}else if(this.id == 'brightness'){
-					brightness = this.value * 2;
-				}else if(this.id == 'hueRotate'){
-					hueRotate = this.value;
-				}else if(this.id == 'sepia'){
-					sepia = this.value;
-				}
-				
-				video.style.filter = "saturate("+ saturate +"%) contrast("+ contrast +"%) brightness("+ brightness +"%) hue-rotate("+ hueRotate +"deg) sepia("+ sepia +"%)";
-				video.style.WebkitFilter = "saturate("+ saturate +"%) contrast("+ contrast +"%) brightness("+ brightness +"%) hue-rotate("+ hueRotate +"deg) sepia("+ sepia +"%)";
-				
-			});
-				
+		player.addEventListener('change', function(e){
+			e = e || window.event;
+			
+			if(e.target.id == 'volume'){
+				video.volume = e.target.value;
+				video.muted = false;
+				music.style.backgroundImage = 'url(img/music.png)';
+			}else if(e.target.id == 'saturate'){
+				saturate = e.target.value * 2;
+			}else if(e.target.id == 'contrast'){
+				contrast = e.target.value * 2;
+			}else if(e.target.id == 'brightness'){
+				brightness = e.target.value * 2;
+			}else if(e.target.id == 'hueRotate'){
+				hueRotate = e.target.value;
+			}else if(e.target.id == 'sepia'){
+				sepia = e.target.value;
+			}
+			
+			video.style.filter = "saturate("+ saturate +"%) contrast("+ contrast +"%) brightness("+ brightness +"%) hue-rotate("+ hueRotate +"deg) sepia("+ sepia +"%)";
+			video.style.WebkitFilter = "saturate("+ saturate +"%) contrast("+ contrast +"%) brightness("+ brightness +"%) hue-rotate("+ hueRotate +"deg) sepia("+ sepia +"%)";
+			
 		});
 		
 	};
