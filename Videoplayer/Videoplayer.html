@@ -7,10 +7,10 @@
 
     <link rel="stylesheet" href="css/style.css" />
 	
-	<div class="player">
+	<div class="player" id="player">
     
 		<video class="video" id="video">
-			<source src="Gensou Mangekyou - The Memories of Phantasm - 01.mp4"/>
+			<source id="source" src="Gensou Mangekyou - The Memories of Phantasm - 01.mp4"/>
 		</video>
 	
 		<div class="controls">
@@ -61,6 +61,9 @@
 	</div>
 	
 	<script src="js/player.js"></script>
+	<script>
+	    Videomodule.videoplayer(800, 600);
+	</script>
  
 </body>
 </html>

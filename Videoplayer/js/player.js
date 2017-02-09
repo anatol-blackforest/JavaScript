@@ -1,14 +1,15 @@
-﻿(function(){
-	
+﻿let Videomodule = {};
+
+Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675){
 	window.onload = function(){
-			
-		//constants	- dimensions
-		const width = 900;
-		const height = 675;
 		
-        //constants - dom
-		const player = document.getElementsByClassName('player')[0];
-		const video = document.getElementsByClassName('video')[0];
+		//constants	- dimensions
+		const width = videoWidth;
+		const height = videoHeight;
+		
+		//constants - dom
+		const player = document.getElementById('player');
+		const video = document.getElementById('video');
 		const scale = document.getElementById('scale');
 		const progress = document.getElementById('progress');
 		const currenttimeSpan = document.getElementById('currenttime');
@@ -90,7 +91,7 @@
 					
 					let x = e.offsetX==undefined?e.layerX:e.offsetX;
 					let playPoint = video.duration*(x/parseInt(getComputedStyle(scale).width)); 
-				    progress.style.width = `${parseInt((x/(parseInt(getComputedStyle(scale).width)/100)))}%`;
+					progress.style.width = `${parseInt((x/(parseInt(getComputedStyle(scale).width)/100)))}%`;
 					video.currentTime = playPoint;
 					currenttimeSpan.textContent = calculateCurrentTime()();
 					
@@ -184,5 +185,4 @@
 		});
 		
 	};
-	
-})()
+};
