@@ -2,16 +2,12 @@
 <html>
 <head>
     <title>Videoplayer</title>
+	<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-
-    <link rel="stylesheet" href="css/style.css" />
-	
 	<div class="player" id="player">
     
-		<video class="video" id="video">
-			<source id="source" src="Gensou Mangekyou - The Memories of Phantasm - 01.mp4"/>
-		</video>
+		<video class="video" id="video" ></video>
 	
 		<div class="controls">
 			<button id="play" title="play">play</button>
@@ -60,9 +56,10 @@
 		
 	</div>
 	
-	<script src="js/player.js"></script>
+	<script  src="js/player.js"></script>
+	
 	<script>
-	    Videomodule.videoplayer(800, 600);
+		Videomodule.videoplayer(800, 600, "poland.mp4");
 	</script>
  
 </body>

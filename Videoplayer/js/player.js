@@ -1,7 +1,8 @@
-﻿let Videomodule = {};
+﻿var Videomodule = {};
 
-Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675){
-	window.onload = function(){
+Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc){
+	
+	window.onload = function(){		
 		
 		//constants	- dimensions
 		const width = videoWidth;
@@ -21,16 +22,30 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675){
 		const filters = document.querySelector('.filters');
 		
 		//filtersprop
-		let filter, animationFrame;
+		let filter, animationFrame, durHours, durMinutes, durSeconds
 		let saturate = 100, contrast = 100, brightness = 100, hueRotate = 0, sepia = 0;
 		let inversion = false;
 		
-		//videofile duration
-		let durHours = parseInt(video.duration/3600);
-		let durMinutes = parseInt(video.duration/60);
-		let durSeconds = parseInt(video.duration%60);
+		video.setAttribute("src", videoSrc);
 		
-		durationSpan.textContent = `${durHours}:${durMinutes}:${durSeconds}`;
+		
+		var computingTime = function(duration){
+			let cHours = parseInt(duration/3600);
+			let cMinutes = parseInt(duration/60);
+			let cSeconds = parseInt(duration%60);
+			return function(){
+				(cHours>9)?cHours=cHours:cHours=`0${cHours}`;
+				(cMinutes>9)?cMinutes=cMinutes:cMinutes=`0${cMinutes}`;
+				(cSeconds>9)?cSeconds=cSeconds:cSeconds=`0${cSeconds}`;
+				return [cHours, cMinutes, cSeconds];
+			}
+		}
+		
+		//videofile duration
+		video.addEventListener('loadedmetadata', function() {
+			[durHours, durMinutes, durSeconds] = computingTime(video.duration)();
+			durationSpan.textContent = `${durHours}:${durMinutes}:${durSeconds}`;
+		});
 		
 		video.width = width;
 		video.height = height;
@@ -41,19 +56,11 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675){
 		player.style.height = `${height}px`;
 		
 		let calculateCurrentTime = function(){
-		
-			let hours = parseInt(video.currentTime/3600);
-			let minutes = parseInt(video.currentTime/60);
-			let seconds = parseInt(video.currentTime%60);
-			
+		    let hours, minutes, seconds;
 			return function(){
-				(hours>9)?hours=hours:hours=`0${hours}`;
-				(minutes>9)?minutes=minutes:minutes=`0${minutes}`;
-				(seconds>9)?seconds=seconds:seconds=`0${seconds}`;
-				
+				[hours, minutes, seconds] = computingTime(video.currentTime)();
 				return `${hours}:${minutes}:${seconds}`;
 			}
-			
 		};
 		
 		//scale
@@ -181,8 +188,8 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675){
 			video.style.filter = `saturate(${saturate}%) contrast(${contrast}%) brightness(${brightness}%) hue-rotate(${hueRotate}deg) sepia(${sepia}%)`;
 			video.style.WebkitFilter = `saturate(${saturate}%) contrast(${contrast}%) brightness(${brightness}%) hue-rotate(${hueRotate}deg) sepia(${sepia}%)`;
 			
-			
 		});
+	
+	};	
 		
-	};
 };
