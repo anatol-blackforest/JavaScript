@@ -54,22 +54,22 @@ label{
 	background: -ms-linear-gradient( left, green, yellow);
 	background: linear-gradient( left, green, yellow);
 }
-#play{
+.play{
 	position:relative;
 	margin-left:0;
 	background-image:url('../img/play.png');
 }
-#music{
+.music{
 	position:relative;
 	float:right;
 	background-image:url('../img/music.png');
 }
-#stop{
+.stop{
 	position:relative;
 	float:right;
 	background-image:url('../img/stop.png');
 }
-#fullscreen{
+.fullscreen{
 	position:relative;
 	float:right;
 	background-image:url('../img/fullscreen.png');
@@ -89,12 +89,12 @@ label{
 	position:relative;
 }
 
-.time #duration {
+.time .duration {
 	width:100%;
 	float:left;
 }
 
-.time #currenttime {
+.time .currenttime {
 	width:100%;
 	float:right
 }

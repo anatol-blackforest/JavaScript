@@ -1,6 +1,6 @@
 ﻿var Videomodule = {};
 
-Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc){
+Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight = 675, videoSrc){
 	
 	window.onload = function(){		
 		
@@ -8,18 +8,118 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 		const width = videoWidth;
 		const height = videoHeight;
 		
+		//player DOM generating
+		
 		//constants - dom
-		const player = document.getElementById('player');
-		const video = document.getElementById('video');
-		const scale = document.getElementById('scale');
-		const progress = document.getElementById('progress');
-		const currenttimeSpan = document.getElementById('currenttime');
-		const durationSpan = document.getElementById('duration');
-		const volume = document.getElementById('volume');
-		const play = document.getElementById('play');
-		const music = document.getElementById('music');
-		const controls = document.querySelector('.controls');
-		const filters = document.querySelector('.filters');
+		const container = document.querySelector(containerName);
+		const player = document.createElement("div");
+		const video = document.createElement("video");
+		const controls = document.createElement("div");
+		const time = document.createElement("div");
+		const currenttimeSpan = document.createElement("span");
+		const durationSpan = document.createElement("span");
+		const scale = document.createElement("div");
+		const progress = document.createElement("div");
+		const volume = document.createElement("div");
+		const volumeLabel = document.createElement("label");
+		const volumeRange = document.createElement("input");
+		const play = document.createElement("button");
+		const fullscreen = document.createElement("button");
+		const music = document.createElement("button");
+		const stop = document.createElement("button");
+		const filters = document.createElement("div");
+		const filterNames = [
+		    {name:"saturate", value: "Насыщенность"},
+			{name:"contrast", value: "Контрастность"},
+			{name:"brightness", value: "Яркость"},
+			{name:"hueRotate", value: "ЛСД"},
+			{name:"sepia", value: "Сепия"},
+		];
+		const inverse = document.createElement("div");
+		const invert = document.createElement("button");
+		
+		//set DOM classes
+		player.className = "player";
+		video.className = "video";
+		controls.className = "controls";
+		play.className = "play";
+		time.className = "time";
+		progress.className = "progress";
+		scale.className = "scale";
+		volume.className = "volume";
+		volumeRange.className = "volume-range";
+		fullscreen.className = "fullscreen";
+		stop.className = "stop";
+		music.className = "music";
+		filters.className = "filters";
+		filters.classList.add("controls");
+		inverse.className = "inverse";
+		invert.className = "invert";
+		durationSpan.className = "duration";
+		currenttimeSpan.className = "currenttime";
+		
+		//filters generation	
+		filterNames.forEach(function(item){
+			let div = document.createElement("div");
+			let label = document.createElement("label");
+			let input = document.createElement("input");
+			label.textContent = item.value;
+			input.setAttribute("type","range");
+			input.setAttribute("name",item.name);
+			input.setAttribute("min", "0");
+			if(item.name == "hueRotate"){
+				input.setAttribute("max", "360");
+			}else{
+				input.setAttribute("max", "100");
+			}
+			input.setAttribute("step", "1");
+			
+			if(item.name == "hueRotate" || item.name == "sepia" ){
+				input.setAttribute("value", "0");
+			}else{
+				input.setAttribute("value", "50");
+			}
+			
+			input.className = item.name;
+			filters.appendChild(div);
+			div.appendChild(label);
+			div.appendChild(input);
+			
+		})
+		
+		//set player`s elements into page
+		filters.appendChild(inverse);
+		inverse.appendChild(invert);
+		container.appendChild(player);
+		player.appendChild(video);
+		player.appendChild(controls);
+		controls.appendChild(play);
+		controls.appendChild(time);
+		time.appendChild(durationSpan);
+		time.appendChild(currenttimeSpan);
+		controls.appendChild(scale);
+		scale.appendChild(progress);
+		controls.appendChild(volume);
+		controls.appendChild(fullscreen);
+		controls.appendChild(stop);
+		controls.appendChild(music);
+		volume.appendChild(volumeLabel);
+		volume.appendChild(volumeRange);
+		player.appendChild(filters);
+		
+		//text on elements
+		volumeLabel.textContent = "Громкость";
+		invert.textContent = "В негатив";
+		
+		//volume attributes
+		volumeRange.setAttribute("type", "range");
+		volumeRange.setAttribute("name", "volume");
+		volumeRange.setAttribute("min", "0.0");
+		volumeRange.setAttribute("max", "1.0");
+		volumeRange.setAttribute("step", "0.1");
+		volumeRange.setAttribute("value", "0.5");
+		
+		//END player DOM generating
 		
 		//filtersprop
 		let filter, animationFrame, durHours, durMinutes, durSeconds
@@ -27,7 +127,6 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 		let inversion = false;
 		
 		video.setAttribute("src", videoSrc);
-		
 		
 		var computingTime = function(duration){
 			let cHours = parseInt(duration/3600);
@@ -51,6 +150,7 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 		video.height = height;
 		video.volume = 0.5;
 		currenttimeSpan.textContent = '00:00:00';
+		durationSpan.textContent = '00:00:00';
 		
 		player.style.width = `${width}px`;
 		player.style.height = `${height}px`;
@@ -83,7 +183,7 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 		player.addEventListener('click', function(e){
 				e = e || window.event;
 					
-				if(e.target.id == 'video'){
+				if(e.target.className == 'video'){
 					
 					if(video.paused){
 						video.play();
@@ -94,7 +194,7 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 						play.style.backgroundImage = 'url(img/play.png)';
 					}	
 					
-				}else if(e.target.id == 'scale' || e.target.id == 'progress'){
+				}else if(e.target.className == 'scale' || e.target.className == 'progress'){
 					
 					let x = e.offsetX==undefined?e.layerX:e.offsetX;
 					let playPoint = video.duration*(x/parseInt(getComputedStyle(scale).width)); 
@@ -102,7 +202,7 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 					video.currentTime = playPoint;
 					currenttimeSpan.textContent = calculateCurrentTime()();
 					
-				}else if(e.target.id == 'fullscreen'){
+				}else if(e.target.className == 'fullscreen'){
 					
 					if (video.requestFullscreen) {
 					  video.requestFullscreen();
@@ -112,7 +212,7 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 					  video.webkitRequestFullscreen();
 					}
 					
-				}else if(e.target.id == 'play'){
+				}else if(e.target.className == 'play'){
 					
 					if(video.paused){
 						video.play();
@@ -125,7 +225,7 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 					}
 					durationSpan.textContent = `${durHours}:${durMinutes}:${durSeconds}`;
 					
-				}else if(e.target.id == 'music'){
+				}else if(e.target.className == 'music'){
 					
 					if(video.muted){
 						video.muted = false;
@@ -136,7 +236,7 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 						e.target.style.backgroundImage = 'url(img/nomusic.png)'
 					}
 					
-				}else if(e.target.id == 'stop'){
+				}else if(e.target.className == 'stop'){
 					
 					video.pause();
 					video.currentTime = 0;
@@ -147,7 +247,7 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 					
 					play.style.backgroundImage = 'url(img/play.png)';
 					
-				}else if(e.target.id == 'invert'){
+				}else if(e.target.className == 'invert'){
 					
 					inversion = !inversion;
 			
@@ -169,19 +269,19 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 		player.addEventListener('change', function(e){
 			e = e || window.event;
 			
-			if(e.target.id == 'volume'){
+			if(e.target.className == 'volume-range'){
 				video.volume = e.target.value;
 				video.muted = false;
 				music.style.backgroundImage = 'url(img/music.png)';
-			}else if(e.target.id == 'saturate'){
+			}else if(e.target.className == 'saturate'){
 				saturate = e.target.value * 2;
-			}else if(e.target.id == 'contrast'){
+			}else if(e.target.className == 'contrast'){
 				contrast = e.target.value * 2;
-			}else if(e.target.id == 'brightness'){
+			}else if(e.target.className == 'brightness'){
 				brightness = e.target.value * 2;
-			}else if(e.target.id == 'hueRotate'){
+			}else if(e.target.className == 'hueRotate'){
 				hueRotate = e.target.value;
-			}else if(e.target.id == 'sepia'){
+			}else if(e.target.className == 'sepia'){
 				sepia = e.target.value;
 			}
 			
@@ -189,7 +289,7 @@ Videomodule.videoplayer = function(videoWidth = 900, videoHeight = 675, videoSrc
 			video.style.WebkitFilter = `saturate(${saturate}%) contrast(${contrast}%) brightness(${brightness}%) hue-rotate(${hueRotate}deg) sepia(${sepia}%)`;
 			
 		});
-	
+		
 	};	
 		
 };
