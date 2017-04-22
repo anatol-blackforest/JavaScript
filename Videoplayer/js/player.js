@@ -36,8 +36,8 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 			{name:"hueRotate", value: "ЛСД"},
 			{name:"sepia", value: "Сепия"},
 		];
-		const norma = document.createElement("div");
-		const normal = document.createElement("button");
+		const inverse = document.createElement("div");
+		const invert = document.createElement("button");
 		
 		//set DOM classes
 		player.className = "player";
@@ -55,8 +55,8 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 		music.className = "music";
 		filters.className = "filters";
 		filters.classList.add("controls");
-		norma.className = "norma";
-		normal.className = "normal";
+		inverse.className = "inverse";
+		invert.className = "invert";
 		durationSpan.className = "duration";
 		currenttimeSpan.className = "currenttime";
 		
@@ -90,8 +90,8 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 		});
 		
 		//set player`s elements into page
-		filters.appendChild(norma);
-		norma.appendChild(normal);
+		filters.appendChild(inverse);
+		inverse.appendChild(invert);
 		container.appendChild(player);
 		player.appendChild(video);
 		player.appendChild(playicon);
@@ -111,7 +111,7 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 		
 		//text on elements
 		volumeLabel.textContent = "Громкость";
-		normal.textContent = "В норму";
+		invert.textContent = "В негатив";
 		
 		//volume attributes
 		volumeRange.setAttribute("type", "range");
@@ -126,6 +126,7 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 		//filtersprop
 		let filter, animationFrame, durHours, durMinutes, durSeconds
 		let saturate = 100, contrast = 100, brightness = 100, hueRotate = 0, sepia = 0;
+		let inversion = false;
 		
 		video.setAttribute("src", videoSrc);
 		
@@ -261,9 +262,20 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 					play.style.backgroundImage = 'url(img/play.png)';
 					playicon.classList.remove('hidden')
 					
-				}else if(e.target.className == 'normal'){
-					video.style.filter = "";
-					video.style.WebkitFilter = "";
+				}else if(e.target.className == 'invert'){
+					
+					inversion = !inversion;
+			
+					if(inversion){
+						video.style.filter = "invert(100%)";
+						video.style.WebkitFilter = "invert(100%)";
+						e.target.textContent = 'В норму';
+					}else{
+						video.style.filter = "invert(0%)";
+						video.style.WebkitFilter = "invert(0%)";
+						e.target.textContent = 'В негатив';
+					}
+					
 				}
 			}); 
 		

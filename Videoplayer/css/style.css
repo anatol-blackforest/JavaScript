@@ -125,7 +125,7 @@ padding-top:0
 	width:100%;
 	box-sizing:border-box;
 }
-.filters div.norma{
+.filters div.invert{
 	position:absolute;
 	bottom:10px;
 	right:0;
