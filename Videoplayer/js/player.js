@@ -1,6 +1,6 @@
 ﻿var Videomodule = {};
 
-Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight = 675, videoSrc){
+Videomodule.videoplayer = function(containerName, videoSrc, videoWidth = 900, videoHeight = 675){
 	
 	window.onload = function(){		
 		
