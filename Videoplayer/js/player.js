@@ -181,6 +181,28 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 			
 		};
 		
+		//fullscreen
+		
+		if (document.addEventListener)
+		{
+			document.addEventListener('webkitfullscreenchange', exitHandler, false);
+			document.addEventListener('mozfullscreenchange', exitHandler, false);
+			document.addEventListener('fullscreenchange', exitHandler, false);
+			document.addEventListener('MSFullscreenChange', exitHandler, false);
+		}
+
+		function exitHandler()
+		{
+			if (document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement !== null)
+			{
+				if(video.paused){
+					playicon.classList.remove('hidden')
+				}else{
+					playicon.classList.add('hidden')
+				}
+			}
+		}
+		
 		//buttons
 		
 		player.addEventListener('click', function(e){
