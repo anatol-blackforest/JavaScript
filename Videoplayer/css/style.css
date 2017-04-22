@@ -1,9 +1,13 @@
+body{
+    background:#ccc
+}
 video{
 	background:black;
 	cursor:pointer
 }
 .player{
 	margin:0 auto;
+	position:relative;
 	border:1px solid black;
 }
 .controls{
@@ -145,4 +149,21 @@ margin: 10px 0 0 0
 div.inverse button{
 float:right;
 margin: 0
+}
+.playicon{
+    display:block;
+	position:absolute;
+	top:0;
+	left:0;
+	cursor:pointer;
+	background:url('../img/play.png') 50% 50% no-repeat;
+	height:100%;
+	width:100%;
+	z-index:100
+}
+.hidden{
+    display:none
+}
+.visible{
+    display:block
 }

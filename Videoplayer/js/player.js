@@ -14,6 +14,7 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 		const container = document.querySelector(containerName);
 		const player = document.createElement("div");
 		const video = document.createElement("video");
+		const playicon = document.createElement("div");
 		const controls = document.createElement("div");
 		const time = document.createElement("div");
 		const currenttimeSpan = document.createElement("span");
@@ -41,6 +42,7 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 		//set DOM classes
 		player.className = "player";
 		video.className = "video";
+		playicon.className = "playicon"
 		controls.className = "controls";
 		play.className = "play";
 		time.className = "time";
@@ -92,6 +94,7 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 		norma.appendChild(normal);
 		container.appendChild(player);
 		player.appendChild(video);
+		player.appendChild(playicon);
 		player.appendChild(controls);
 		controls.appendChild(play);
 		controls.appendChild(time);
@@ -103,7 +106,6 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 		controls.appendChild(fullscreen);
 		controls.appendChild(stop);
 		controls.appendChild(music);
-		volume.appendChild(volumeLabel);
 		volume.appendChild(volumeRange);
 		player.appendChild(filters);
 		
@@ -191,8 +193,18 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 					}else{
 						video.pause();
 						play.style.backgroundImage = 'url(img/play.png)';
+						playicon.classList.remove('hidden')
 					}	
 					
+				}else if(e.target.className == 'playicon'){
+					
+					if(video.paused){
+						video.play();
+						progressbar();
+						play.style.backgroundImage = 'url(img/pause.png)';
+						e.target.classList.add('hidden')
+					}
+						
 				}else if(e.target.className == 'scale' || e.target.className == 'progress'){
 					
 					let x = e.offsetX==undefined?e.layerX:e.offsetX;
@@ -217,10 +229,12 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 						video.play();
 						play.style.backgroundImage = 'url(img/pause.png)'
 						animationFrame = requestAnimationFrame(progressbar);
+						playicon.classList.add('hidden')
 					}else{
 						video.pause();
 						play.style.backgroundImage = 'url(img/play.png)'
 						cancelAnimationFrame(animationFrame);
+						playicon.classList.remove('hidden')
 					}
 					durationSpan.textContent = `${durHours}:${durMinutes}:${durSeconds}`;
 					
@@ -245,6 +259,7 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 					progress.style.width = 0;
 					
 					play.style.backgroundImage = 'url(img/play.png)';
+					playicon.classList.remove('hidden')
 					
 				}else if(e.target.className == 'normal'){
 					video.style.filter = "";
