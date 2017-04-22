@@ -106,6 +106,7 @@ Videomodule.videoplayer = function(containerName, videoWidth = 900, videoHeight 
 		controls.appendChild(fullscreen);
 		controls.appendChild(stop);
 		controls.appendChild(music);
+		volume.appendChild(volumeLabel);
 		volume.appendChild(volumeRange);
 		player.appendChild(filters);
 		
