@@ -1,5 +1,5 @@
 body{
-    background:#ccc
+    background:Darkgray
 }
 video{
 	background:black;
@@ -8,7 +8,7 @@ video{
 .player{
 	margin:0 auto;
 	position:relative;
-	border:1px solid black;
+	//border:1px solid black;
 }
 .controls{
 	position:relative;
